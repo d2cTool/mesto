@@ -5,7 +5,7 @@
 }
 
 .popup::before {
-  position: absolute;
+  position: fixed;
 
   content:"";
   display: block;
