@@ -1,14 +1,13 @@
 .popup {
   display: none;
+
   width: 100%;
   height: 100%;
 }
 
 .popup::before {
   position: fixed;
-
-  content:"";
-  display: block;
+  content: "";
 
   top: 0px;
   left: 0px;
