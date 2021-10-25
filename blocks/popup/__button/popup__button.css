@@ -5,7 +5,7 @@
   padding: 0;
   border: none;
 
-  margin: 46px auto;
+  margin: 48px auto 37px;
 
   width: 358px;
   height: 50px;
@@ -35,6 +35,6 @@
     font-size: 14px;
     line-height: 17px;
 
-    margin: 42px auto;
+    margin: 44px auto 24px;
   }
 }

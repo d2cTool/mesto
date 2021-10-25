@@ -1,5 +1,8 @@
 .profile__edit-button {
   margin: 0;
+  border: none;
+
+  box-sizing: border-box;
 
   width: 24px;
   height: 24px;
@@ -13,6 +16,12 @@
 
   border: 1px solid #ffffff;
   box-sizing: border-box;
+
+  background: transparent;
+  background-repeat: no-repeat;
+  background-size: 10px 10px;
+  background-position: center;
+  background-image: url("../../../images/edit-pen.svg");
 
   transition: opacity 1s ease-in-out;
 
@@ -30,6 +39,8 @@
 
     top: 155px;
     left: 198px;
+
+    background-size: 7.5px 7.5px;
 
     position: absolute;
   }

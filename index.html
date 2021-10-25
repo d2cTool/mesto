@@ -15,14 +15,8 @@
       <main class="main">
         <section class="popup">
           <div class="popup__container">
-            <a class="popup__close-button">
-              <img
-                src="./images/close-icon.svg"
-                alt="иконка закрытия формы"
-                class="popup__close-image"
-              />
-            </a>
-            <form action="/post" class="popup__form">
+            <button type="button" class="popup__close-button"></button>
+            <form action="/post" name="popupForm" class="popup__form">
               <h2 class="popup__title">Редактировать профиль</h2>
               <input
                 id="nameInput"
@@ -53,13 +47,7 @@
             />
             <div class="profile__info">
               <h1 class="profile__title">Жак-Ив Кусто</h1>
-              <a class="profile__edit-button">
-                <img
-                  src="./images/edit-pen.svg"
-                  alt="иконка редактирования"
-                  class="profile__edit-image"
-                />
-              </a>
+              <button type="button" class="profile__edit-button"></button>
               <p class="profile__subtitle">Исследователь океана</p>
             </div>
           </div>
@@ -80,13 +68,7 @@
             />
             <div class="element__group">
               <h2 class="element__title">Карачаевск</h2>
-              <a href="#" class="element__like-button">
-                <img
-                  src="./images/heart.svg"
-                  alt="лайк"
-                  class="element__like-image"
-                />
-              </a>
+              <button type="button" class="element__like-button"></button>
             </div>
           </article>
           <article class="element">
@@ -97,13 +79,7 @@
             />
             <div class="element__group">
               <h2 class="element__title">Гора Эльбрус</h2>
-              <a href="#" class="element__like-button">
-                <img
-                  src="./images/heart.svg"
-                  alt="лайк"
-                  class="element__like-image"
-                />
-              </a>
+              <button type="button" class="element__like-button"></button>
             </div>
           </article>
           <article class="element">
@@ -114,13 +90,7 @@
             />
             <div class="element__group">
               <h2 class="element__title">Домбай</h2>
-              <a href="#" class="element__like-button">
-                <img
-                  src="./images/heart.svg"
-                  alt="лайк"
-                  class="element__like-image"
-                />
-              </a>
+              <button type="button" class="element__like-button"></button>
             </div>
           </article>
           <article class="element">
@@ -131,13 +101,7 @@
             />
             <div class="element__group">
               <h2 class="element__title">Карачаево Черкесия</h2>
-              <a href="#" class="element__like-button">
-                <img
-                  src="./images/heart.svg"
-                  alt="лайк"
-                  class="element__like-image"
-                />
-              </a>
+              <button type="button" class="element__like-button"></button>
             </div>
           </article>
           <article class="element">
@@ -148,13 +112,7 @@
             />
             <div class="element__group">
               <h2 class="element__title">Гора Эльбрус</h2>
-              <a href="#" class="element__like-button">
-                <img
-                  src="./images/heart.svg"
-                  alt="лайк"
-                  class="element__like-image"
-                />
-              </a>
+              <button type="button" class="element__like-button"></button>
             </div>
           </article>
           <article class="element">
@@ -165,13 +123,7 @@
             />
             <div class="element__group">
               <h2 class="element__title">Домбай</h2>
-              <a href="#" class="element__like-button">
-                <img
-                  src="./images/heart.svg"
-                  alt="лайк"
-                  class="element__like-image"
-                />
-              </a>
+              <button type="button" class="element__like-button"></button>
             </div>
           </article>
         </section>
@@ -180,6 +132,6 @@
         <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
       </footer>
     </div>
-    <script src="script.js"></script>
+    <script src="./scripts/script.js"></script>
   </body>
 </html>
