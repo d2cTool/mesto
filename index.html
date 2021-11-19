@@ -13,9 +13,13 @@
         <img src="./images/logo.svg" alt="логотип" class="header__logo" />
       </header>
       <main class="main">
-        <section class="popup">
-          <div class="popup__container">
-            <button type="button" aria-label="close" class="popup__close-button"></button>
+        <section class="popup popup_type_profile">
+          <div class="popup__container popup__container_type_profile">
+            <button
+              type="button"
+              aria-label="close"
+              class="popup__close-button"
+            ></button>
             <form action="/post" name="popupForm" class="popup__form">
               <h2 class="popup__title">Редактировать профиль</h2>
               <input
@@ -38,6 +42,48 @@
             </form>
           </div>
         </section>
+        <section class="popup popup_type_card">
+          <div class="popup__container popup__container_type_card">
+            <button
+              type="button"
+              aria-label="close"
+              class="popup__close-button"
+            ></button>
+            <form action="/post" name="popupForm" class="popup__form">
+              <h2 class="popup__title">Новое место</h2>
+              <input
+                id="nameInput"
+                type="text"
+                name="name"
+                class="popup__input"
+                placeholder="Название"
+                value=""
+              />
+              <input
+                id="linkInput"
+                type="text"
+                name="link"
+                class="popup__input"
+                placeholder="Ссылка на картинку"
+                value=""
+              />
+              <button type="submit" class="popup__button">Создать</button>
+            </form>
+          </div>
+        </section>
+        <section class="popup popup_type_preview">
+          <div class="popup__container popup__container_type_preview">
+            <button
+              type="button"
+              aria-label="close"
+              class="popup__close-button popup__preview-close-button"
+            ></button>
+            <figure class="popup__figure">
+              <img src="" alt="изображение" class="popup__photo" />
+              <figcaption class="popup__caption"></figcaption>
+            </figure>
+          </div>
+        </section>
         <section class="profile">
           <div class="profile__content">
             <img
@@ -47,85 +93,45 @@
             />
             <div class="profile__info">
               <h1 class="profile__title">Жак-Ив Кусто</h1>
-              <button type="button" aria-label="edit" class="profile__edit-button"></button>
+              <button
+                type="button"
+                aria-label="edit"
+                class="profile__edit-button"
+              ></button>
               <p class="profile__subtitle">Исследователь океана</p>
             </div>
           </div>
-          <button type="button" aria-label="add" class="profile__add-button"></button>
+          <button
+            type="button"
+            aria-label="add"
+            class="profile__add-button"
+          ></button>
         </section>
-        <section class="elements">
-          <article class="element">
-            <img
-              src="./images/karachaevsk.jpg"
-              alt="карачаевск"
-              class="element__photo"
-            />
-            <div class="element__group">
-              <h2 class="element__title">Карачаевск</h2>
-              <button type="button" aria-label="like" class="element__like-button"></button>
-            </div>
-          </article>
-          <article class="element">
-            <img
-              src="./images/elbrus.jpg"
-              alt="эльбрус"
-              class="element__photo"
-            />
-            <div class="element__group">
-              <h2 class="element__title">Гора Эльбрус</h2>
-              <button type="button" aria-label="like" class="element__like-button"></button>
-            </div>
-          </article>
-          <article class="element">
-            <img
-              src="./images/dombay.jpg"
-              alt="домбай"
-              class="element__photo"
-            />
-            <div class="element__group">
-              <h2 class="element__title">Домбай</h2>
-              <button type="button" aria-label="like" class="element__like-button"></button>
-            </div>
-          </article>
-          <article class="element">
-            <img
-              src="./images/karachaevsk.jpg"
-              alt="карачаевск"
-              class="element__photo"
-            />
-            <div class="element__group">
-              <h2 class="element__title">Карачаево Черкесия</h2>
-              <button type="button" aria-label="like" class="element__like-button"></button>
-            </div>
-          </article>
-          <article class="element">
-            <img
-              src="./images/elbrus.jpg"
-              alt="эльбрус"
-              class="element__photo"
-            />
-            <div class="element__group">
-              <h2 class="element__title">Гора Эльбрус</h2>
-              <button type="button" aria-label="like" class="element__like-button"></button>
-            </div>
-          </article>
-          <article class="element">
-            <img
-              src="./images/dombay.jpg"
-              alt="домбай"
-              class="element__photo"
-            />
-            <div class="element__group">
-              <h2 class="element__title">Домбай</h2>
-              <button type="button" aria-label="like" class="element__like-button"></button>
-            </div>
-          </article>
-        </section>
+        <section class="elements"></section>
       </main>
       <footer class="footer">
         <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
       </footer>
     </div>
+    <template id="element">
+      <article class="element">
+        <img src="" alt="изображение" class="element__photo" />
+        <button
+          type="button"
+          aria-label="delete"
+          class="element__delete-button"
+        ></button>
+        <div class="element__group">
+          <h2 class="element__title"></h2>
+          <button
+            type="button"
+            aria-label="like"
+            class="element__like-button"
+          ></button>
+        </div>
+      </article>
+    </template>
+    <script src="./scripts/initial_data.js"></script>
     <script src="./scripts/script.js"></script>
   </body>
 </html>
