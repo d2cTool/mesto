@@ -26,7 +26,7 @@ const previewPopupCloseButtonSelector = previewPopupSelector.querySelector(
 const cardPopupSelector = document.querySelector(".popup_type_card");
 const cardPopupFormSelector = cardPopupSelector.querySelector(".popup__form");
 const cardPopupFormNameInputSelector =
-  cardPopupFormSelector.querySelector("#nameInput");
+  cardPopupFormSelector.querySelector("#placeNameInput");
 const cardPopupFormLinkInputSelector =
   cardPopupFormSelector.querySelector("#linkInput");
 const cardPopupCloseButtonSelector = cardPopupSelector.querySelector(
