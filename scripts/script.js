@@ -1,99 +1,84 @@
 // selectors
-const editButtonSelector = document.querySelector(".profile__edit-button");
-const closeButtonSelector = document.querySelector(".popup__close-button");
-const addButtonSelector = document.querySelector(".profile__add-button");
+const editButton = document.querySelector(".profile__edit-button");
+const closeButton = document.querySelector(".popup__close-button");
+const addButton = document.querySelector(".profile__add-button");
 
-const profileTitleSelector = document.querySelector(".profile__title");
-const profileSubtitleSelector = document.querySelector(".profile__subtitle");
+const profileTitle = document.querySelector(".profile__title");
+const profileSubtitle = document.querySelector(".profile__subtitle");
 
-const popupSelector = document.querySelector(".popup_type_profile");
-const popupFormSelector = popupSelector.querySelector(".popup__form");
-const nameInputSelector = popupFormSelector.querySelector("#nameInput");
-const jobInputSelector = popupFormSelector.querySelector("#jobInput");
+const profilePopup = document.querySelector(".popup_type_profile");
+const profilePopupForm = profilePopup.querySelector(".popup__form");
+const profileName = profilePopupForm.querySelector("#nameInput");
+const profileJob = profilePopupForm.querySelector("#jobInput");
 
 const elementTemplate = document.querySelector("#element").content;
-const elementsSelector = document.querySelector(".elements");
+const elements = document.querySelector(".elements");
 
-const previewPopupSelector = document.querySelector(".popup_type_preview");
-const previewPopupPhotoSelector =
-  previewPopupSelector.querySelector(".popup__photo");
-const previewPopupCaptionSelector =
-  previewPopupSelector.querySelector(".popup__caption");
-const previewPopupCloseButtonSelector = previewPopupSelector.querySelector(
+const previewPopup = document.querySelector(".popup_type_preview");
+const previewPopupPhoto = previewPopup.querySelector(".popup__photo");
+const previewPopupCaption = previewPopup.querySelector(".popup__caption");
+const previewPopupCloseButton = previewPopup.querySelector(
   ".popup__close-button"
 );
 
-const cardPopupSelector = document.querySelector(".popup_type_card");
-const cardPopupFormSelector = cardPopupSelector.querySelector(".popup__form");
-const cardPopupFormNameInputSelector =
-  cardPopupFormSelector.querySelector("#placeNameInput");
-const cardPopupFormLinkInputSelector =
-  cardPopupFormSelector.querySelector("#linkInput");
-const cardPopupCloseButtonSelector = cardPopupSelector.querySelector(
-  ".popup__close-button"
-);
-
-//const deleteButtonSelector = document.querySelector(".element__delete-button");
+const cardPopup = document.querySelector(".popup_type_card");
+const cardPopupForm = cardPopup.querySelector(".popup__form");
+const cardPopupName = cardPopupForm.querySelector("#placeNameInput");
+const cardPopupLink = cardPopupForm.querySelector("#linkInput");
+const cardPopupCloseButton = cardPopup.querySelector(".popup__close-button");
 
 // listener functions
-const showPopupFunction = () => {
-  popupSelector.classList.add("popup_opened");
-  nameInputSelector.value = profileTitleSelector.textContent;
-  jobInputSelector.value = profileSubtitleSelector.textContent;
+const showProfilePopup = () => {
+  openPopup(profilePopup);
+  profileName.value = profileTitle.textContent;
+  profileJob.value = profileSubtitle.textContent;
 };
-const hidePopupFunction = () => popupSelector.classList.remove("popup_opened");
-const submitPopupFormHandler = (evt) => {
+const hideProfilePopup = () => closePopup(profilePopup);
+const submitProfileForm = (evt) => {
   evt.preventDefault();
 
-  profileTitleSelector.textContent = nameInputSelector.value;
-  profileSubtitleSelector.textContent = jobInputSelector.value;
+  profileTitle.textContent = profileName.value;
+  profileSubtitle.textContent = profileJob.value;
 
-  popupSelector.classList.remove("popup_opened");
+  closePopup(profilePopup);
 };
 
 // added listeners
-editButtonSelector.addEventListener("click", showPopupFunction);
-closeButtonSelector.addEventListener("click", hidePopupFunction);
-previewPopupCloseButtonSelector.addEventListener("click", () =>
-  previewPopupSelector.classList.remove("popup_opened")
+editButton.addEventListener("click", showProfilePopup);
+closeButton.addEventListener("click", hideProfilePopup);
+previewPopupCloseButton.addEventListener("click", () =>
+  closePopup(previewPopup)
 );
 
-popupFormSelector.addEventListener("submit", submitPopupFormHandler);
+profilePopupForm.addEventListener("submit", submitProfileForm);
 
-addButtonSelector.addEventListener("click", () =>
-  cardPopupSelector.classList.add("popup_opened")
-);
+addButton.addEventListener("click", () => openPopup(cardPopup));
 
-cardPopupFormSelector.addEventListener("submit", (evt) => {
+cardPopupForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  addElement(
-    createElement(
-      cardPopupFormNameInputSelector.value,
-      cardPopupFormLinkInputSelector.value
-    )
-  );
+  addElement(createElement(cardPopupName.value, cardPopupLink.value));
+
+  cardPopupName.value = "";
+  cardPopupLink.value = "";
+
+  closePopup(cardPopup);
 });
 
-cardPopupCloseButtonSelector.addEventListener("click", () =>
-  cardPopupSelector.classList.remove("popup_opened")
-);
+cardPopupCloseButton.addEventListener("click", () => closePopup(cardPopup));
+
+function openPopup(popup) {
+  popup.classList.add("popup_opened");
+}
+
+function closePopup(popup) {
+  popup.classList.remove("popup_opened");
+}
 
 window.addEventListener("load", (e) => addInitialElements());
 
 function createElement(name, link) {
   const element = elementTemplate.querySelector(".element").cloneNode(true);
 
-  const titleSelector = element.querySelector(".element__title");
-  const photoSelector = element.querySelector(".element__photo");
-
-  titleSelector.textContent = name;
-  photoSelector.src = link;
-
-  return element;
-}
-
-function addElement(element) {
-  elementsSelector.prepend(element);
   element
     .querySelector(".element__delete-button")
     .addEventListener("click", (e) => removeElement(e.target));
@@ -103,14 +88,26 @@ function addElement(element) {
   element
     .querySelector(".element__photo")
     .addEventListener("click", (e) => previewElement(e.target));
+
+  const title = element.querySelector(".element__title");
+  const photo = element.querySelector(".element__photo");
+
+  title.textContent = name;
+  photo.src = link;
+
+  return element;
+}
+
+function addElement(element) {
+  elements.prepend(element);
 }
 
 function previewElement(element) {
-  previewPopupSelector.classList.add("popup_opened");
-  previewPopupCaptionSelector.textContent = element
+  openPopup(previewPopup);
+  previewPopupCaption.textContent = element
     .closest(".element")
     .querySelector(".element__title").textContent;
-  previewPopupPhotoSelector.src = element.src;
+  previewPopupPhoto.src = element.src;
 }
 
 function likeElement(element) {
