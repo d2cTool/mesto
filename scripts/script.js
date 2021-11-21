@@ -27,6 +27,8 @@ const cardPopupName = cardPopupForm.querySelector("#placeNameInput");
 const cardPopupLink = cardPopupForm.querySelector("#linkInput");
 const cardPopupCloseButton = cardPopup.querySelector(".popup__close-button");
 
+const popupForms = document.querySelectorAll(".popup__form");
+
 // listener functions
 const showProfilePopup = () => {
   openPopup(profilePopup);
@@ -52,7 +54,10 @@ previewPopupCloseButton.addEventListener("click", () =>
 
 profilePopupForm.addEventListener("submit", submitProfileForm);
 
-addButton.addEventListener("click", () => openPopup(cardPopup));
+addButton.addEventListener("click", () => {
+  openPopup(cardPopup);
+  cardPopupForm.reset();
+});
 
 cardPopupForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
@@ -74,7 +79,36 @@ function closePopup(popup) {
   popup.classList.remove("popup_opened");
 }
 
-window.addEventListener("load", (e) => addInitialElements());
+window.addEventListener("load", (e) => {
+  enableValidation(config);
+  addInitialElements();
+  document.addEventListener("click", (evt) => {
+    closeActivePopup(evt);
+  });
+  document.addEventListener("keydown", (evt) => {
+    if (evt.key === "Escape") {
+      const openedPopup = document.querySelector(".popup_opened");
+      openedPopup.classList.remove("popup_opened");
+    }
+  });
+});
+
+const closeActivePopup = (evt) => {
+  const target = evt.target;
+  const openedPopup = document.querySelector(".popup_opened");
+  const editButton = document.querySelector(".profile__edit-button");
+  const addButton = document.querySelector(".profile__add-button");
+  const photos = Array.from(document.querySelectorAll(".element__photo"));
+  if (openedPopup) {
+    if (
+      !openedPopup.querySelector(".popup__container").contains(target) &&
+      target != editButton &&
+      target != addButton &&
+      !photos.some((e) => target == e)
+    )
+      openedPopup.classList.remove("popup_opened");
+  }
+};
 
 function createElement(name, link) {
   const element = elementTemplate.querySelector(".element").cloneNode(true);
