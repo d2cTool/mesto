@@ -56,7 +56,7 @@ profilePopupForm.addEventListener("submit", submitProfileForm);
 
 addButton.addEventListener("click", () => {
   openPopup(cardPopup);
-  cardPopupForm.reset();
+  //cardPopupForm.reset();
 });
 
 cardPopupForm.addEventListener("submit", (evt) => {
@@ -66,6 +66,9 @@ cardPopupForm.addEventListener("submit", (evt) => {
   cardPopupName.value = "";
   cardPopupLink.value = "";
 
+  const buttonElement = cardPopupForm.querySelector(".popup__button");
+  buttonElement.classList.add(config.inactiveButtonClass);
+
   closePopup(cardPopup);
 });
 
@@ -73,31 +76,31 @@ cardPopupCloseButton.addEventListener("click", () => closePopup(cardPopup));
 
 function openPopup(popup) {
   popup.classList.add("popup_opened");
+  document.addEventListener("click", closePopupByCoverClick);
+  document.addEventListener("keydown", closePopupByEscape);
 }
 
 function closePopup(popup) {
+  document.removeEventListener("click", closePopupByCoverClick);
+  document.removeEventListener("keydown", closePopupByEscape);
   popup.classList.remove("popup_opened");
 }
 
 window.addEventListener("load", (e) => {
   enableValidation(config);
   addInitialElements();
-  document.addEventListener("click", (evt) => {
-    closeActivePopup(evt);
-  });
-  document.addEventListener("keydown", (evt) => {
-    if (evt.key === "Escape") {
-      const openedPopup = document.querySelector(".popup_opened");
-      openedPopup.classList.remove("popup_opened");
-    }
-  });
 });
 
-const closeActivePopup = (evt) => {
+function closePopupByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
+}
+
+function closePopupByCoverClick(evt) {
   const target = evt.target;
   const openedPopup = document.querySelector(".popup_opened");
-  const editButton = document.querySelector(".profile__edit-button");
-  const addButton = document.querySelector(".profile__add-button");
   const photos = Array.from(document.querySelectorAll(".element__photo"));
   if (openedPopup) {
     if (
@@ -106,7 +109,7 @@ const closeActivePopup = (evt) => {
       target != addButton &&
       !photos.some((e) => target == e)
     )
-      openedPopup.classList.remove("popup_opened");
+    closePopup(openedPopup);
   }
 };
 
@@ -128,6 +131,7 @@ function createElement(name, link) {
 
   title.textContent = name;
   photo.src = link;
+  photo.alt = name;
 
   return element;
 }
@@ -142,6 +146,7 @@ function previewElement(element) {
     .closest(".element")
     .querySelector(".element__title").textContent;
   previewPopupPhoto.src = element.src;
+  previewPopupPhoto.alt = previewPopupCaption.textContent;
 }
 
 function likeElement(element) {
