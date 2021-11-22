@@ -1,6 +1,6 @@
 // selectors
 const editButton = document.querySelector(".profile__edit-button");
-const closeButton = document.querySelector(".popup__close-button");
+//const closeButton = document.querySelector(".popup__close-button");
 const addButton = document.querySelector(".profile__add-button");
 
 const profileTitle = document.querySelector(".profile__title");
@@ -17,17 +17,17 @@ const elements = document.querySelector(".elements");
 const previewPopup = document.querySelector(".popup_type_preview");
 const previewPopupPhoto = previewPopup.querySelector(".popup__photo");
 const previewPopupCaption = previewPopup.querySelector(".popup__caption");
-const previewPopupCloseButton = previewPopup.querySelector(
-  ".popup__close-button"
-);
+// const previewPopupCloseButton = previewPopup.querySelector(
+//   ".popup__close-button"
+// );
 
 const cardPopup = document.querySelector(".popup_type_card");
 const cardPopupForm = cardPopup.querySelector(".popup__form");
 const cardPopupName = cardPopupForm.querySelector("#placeNameInput");
 const cardPopupLink = cardPopupForm.querySelector("#linkInput");
-const cardPopupCloseButton = cardPopup.querySelector(".popup__close-button");
+//const cardPopupCloseButton = cardPopup.querySelector(".popup__close-button");
 
-const popupForms = document.querySelectorAll(".popup__form");
+const popups = document.querySelectorAll(".popup");
 
 // listener functions
 const showProfilePopup = () => {
@@ -47,10 +47,10 @@ const submitProfileForm = (evt) => {
 
 // added listeners
 editButton.addEventListener("click", showProfilePopup);
-closeButton.addEventListener("click", hideProfilePopup);
-previewPopupCloseButton.addEventListener("click", () =>
-  closePopup(previewPopup)
-);
+//closeButton.addEventListener("click", hideProfilePopup);
+//previewPopupCloseButton.addEventListener("click", () =>
+//  closePopup(previewPopup)
+//);
 
 profilePopupForm.addEventListener("submit", submitProfileForm);
 
@@ -72,16 +72,16 @@ cardPopupForm.addEventListener("submit", (evt) => {
   closePopup(cardPopup);
 });
 
-cardPopupCloseButton.addEventListener("click", () => closePopup(cardPopup));
+//cardPopupCloseButton.addEventListener("click", () => closePopup(cardPopup));
 
 function openPopup(popup) {
   popup.classList.add("popup_opened");
-  document.addEventListener("click", closePopupByCoverClick);
+  //popup.addEventListener("click", closePopupByCoverClick);
   document.addEventListener("keydown", closePopupByEscape);
 }
 
 function closePopup(popup) {
-  document.removeEventListener("click", closePopupByCoverClick);
+  //popup.removeEventListener("click", closePopupByCoverClick);
   document.removeEventListener("keydown", closePopupByEscape);
   popup.classList.remove("popup_opened");
 }
@@ -91,27 +91,38 @@ window.addEventListener("load", (e) => {
   addInitialElements();
 });
 
+popups.forEach((popup) => {
+  popup.addEventListener("click", (evt) => {
+    if (evt.target.classList.contains("popup_opened")) {
+      closePopup(popup);
+    }
+    if (evt.target.classList.contains("popup__close-button")) {
+      closePopup(popup);
+    }
+  });
+});
+
 function closePopupByEscape(evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_opened");
     closePopup(openedPopup);
   }
 }
 
-function closePopupByCoverClick(evt) {
-  const target = evt.target;
-  const openedPopup = document.querySelector(".popup_opened");
-  const photos = Array.from(document.querySelectorAll(".element__photo"));
-  if (openedPopup) {
-    if (
-      !openedPopup.querySelector(".popup__container").contains(target) &&
-      target != editButton &&
-      target != addButton &&
-      !photos.some((e) => target == e)
-    )
-    closePopup(openedPopup);
-  }
-};
+// function closePopupByCoverClick(evt) {
+//   const target = evt.target;
+//   const openedPopup = document.querySelector(".popup_opened");
+//   const photos = Array.from(document.querySelectorAll(".element__photo"));
+//   if (openedPopup) {
+//     if (
+//       !openedPopup.querySelector(".popup__container").contains(target) &&
+//       target != editButton &&
+//       target != addButton &&
+//       !photos.some((e) => target == e)
+//     )
+//       closePopup(openedPopup);
+//   }
+// }
 
 function createElement(name, link) {
   const element = elementTemplate.querySelector(".element").cloneNode(true);
