@@ -8,9 +8,8 @@ export default class Card {
   }
 
   _getTemplate() {
-    const cardElement = this._cardTemplate
-      .content
-      .querySelector('.element')
+    const cardElement = this._cardTemplate.content
+      .querySelector(".element")
       .cloneNode(true);
 
     return cardElement;
@@ -32,19 +31,16 @@ export default class Card {
 
   _setEventListeners() {
     this._element
-      .querySelector('.element__delete-button')
-      .addEventListener('click', (e) =>
-        this._remove(e.target));
+      .querySelector(".element__delete-button")
+      .addEventListener("click", (e) => this._remove(e.target));
 
     this._element
-      .querySelector('.element__like-button')
-      .addEventListener('click', (e) =>
-        this._like(e.target));
+      .querySelector(".element__like-button")
+      .addEventListener("click", (e) => this._like(e.target));
 
     this._element
-      .querySelector('.element__photo')
-      .addEventListener('click', (e) =>
-        this._preview(e.target));
+      .querySelector(".element__photo")
+      .addEventListener("click", (e) => this._preview(e.target));
   }
 
   _remove(item) {
@@ -57,7 +53,8 @@ export default class Card {
 
   _preview(item) {
     const previewPopupPhoto = this._previewPopup.querySelector(".popup__photo");
-    const previewPopupCaption = this._previewPopup.querySelector(".popup__caption");
+    const previewPopupCaption =
+      this._previewPopup.querySelector(".popup__caption");
 
     previewPopupCaption.textContent = item
       .closest(".element")
