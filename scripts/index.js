@@ -3,6 +3,7 @@ import FormValidator from "./FormValidator.js";
 import * as utils from "./utils.js";
 
 const cards = document.querySelector(".elements");
+const cardSelector = "#element";
 const cardTemplate = document.querySelector("#element");
 const previewPopup = document.querySelector(".popup_type_preview");
 const popups = document.querySelectorAll(".popup");
@@ -28,17 +29,17 @@ window.addEventListener("load", (e) => {
 
 function addInitialElements() {
   utils.initialCards.forEach((item) => {
-    const card = new Card(item, cardTemplate, previewPopup, openPopup);
+    const card = new Card(item, cardSelector, previewPopup, openPopup);
     cards.prepend(card.generateCard());
   });
 }
 
 popups.forEach((popup) => {
   popup.addEventListener("click", (evt) => {
-    if (evt.target.classList.contains("popup_opened")) {
-      closePopup(popup);
-    }
-    if (evt.target.classList.contains("popup__close-button")) {
+    if (
+      evt.target.classList.contains("popup_opened") ||
+      evt.target.classList.contains("popup__close-button")
+    ) {
       closePopup(popup);
     }
   });
@@ -88,14 +89,13 @@ cardPopupForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   const card = new Card(
     { name: cardPopupName.value, link: cardPopupLink.value },
-    cardTemplate,
+    cardSelector,
     previewPopup,
     openPopup
   );
   cards.prepend(card.generateCard());
 
-  cardPopupName.value = "";
-  cardPopupLink.value = "";
+  cardPopupForm.reset();
 
   const buttonElement = cardPopupForm.querySelector(".popup__button");
   buttonElement.classList.add(utils.config.inactiveButtonClass);
