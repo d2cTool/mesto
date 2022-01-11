@@ -1,15 +1,15 @@
 export default class Card {
-  constructor({ name, link }, cardSelector, previewPopup, openPopup) {
+  constructor({ name, link }, cardTemplateSelector, previewPopup, openPopup) {
     this._text = name;
     this._image = link;
-    this._cardSelector = cardSelector;
-    this._previewPopup = previewPopup;
-    this._openPopup = openPopup;
+    this._cardTemplateSelector = cardTemplateSelector;
+    this._preview = previewPopup;
+    this._openPopup = openPopupж
   }
 
   _getTemplate() {
     const cardElement = document
-      .querySelector(this._cardSelector)
+      .querySelector(this._cardTemplateSelector)
       .content
       .querySelector(".element")
       .cloneNode(true);
