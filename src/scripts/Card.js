@@ -1,17 +1,15 @@
 export default class Card {
-  constructor({ name, link }, cardTemplateSelector, previewPopup, openPopup) {
+  constructor({ name, link }, cardTemplateSelector, previewPopup) {
     this._text = name;
     this._image = link;
     this._cardTemplateSelector = cardTemplateSelector;
-    this._preview = previewPopup;
-    this._openPopup = openPopupж
+    this._previewPopup = previewPopup;
   }
 
   _getTemplate() {
     const cardElement = document
       .querySelector(this._cardTemplateSelector)
-      .content
-      .querySelector(".element")
+      .content.querySelector(".element")
       .cloneNode(true);
 
     return cardElement;
@@ -54,16 +52,10 @@ export default class Card {
   }
 
   _preview(item) {
-    const previewPopupPhoto = this._previewPopup.querySelector(".popup__photo");
-    const previewPopupCaption =
-      this._previewPopup.querySelector(".popup__caption");
-
-    previewPopupCaption.textContent = item
+    const title = item
       .closest(".element")
       .querySelector(".element__title").textContent;
-    previewPopupPhoto.src = item.src;
-    previewPopupPhoto.alt = previewPopupCaption.textContent;
-
-    this._openPopup(this._previewPopup);
+    const photo = item.src;
+    this._previewPopup.open(title, photo);
   }
 }
