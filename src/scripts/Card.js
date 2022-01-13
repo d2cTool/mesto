@@ -1,9 +1,9 @@
 export default class Card {
-  constructor({ name, link }, cardTemplateSelector, previewPopup) {
+  constructor({ name, link }, cardTemplateSelector, handleCardClick) {
     this._text = name;
     this._image = link;
     this._cardTemplateSelector = cardTemplateSelector;
-    this._previewPopup = previewPopup;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -40,7 +40,7 @@ export default class Card {
 
     this._element
       .querySelector(".element__photo")
-      .addEventListener("click", (e) => this._preview(e.target));
+      .addEventListener("click", (e) => this._preview());
   }
 
   _remove(item) {
@@ -51,11 +51,7 @@ export default class Card {
     item.classList.toggle("element__like-button_active");
   }
 
-  _preview(item) {
-    const title = item
-      .closest(".element")
-      .querySelector(".element__title").textContent;
-    const photo = item.src;
-    this._previewPopup.open(title, photo);
+  _preview() {
+    this._handleCardClick(this._text, this._image)
   }
 }

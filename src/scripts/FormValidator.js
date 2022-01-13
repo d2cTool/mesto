@@ -13,7 +13,9 @@ export default class FormValidator {
     this._inactiveButtonClass = inactiveButtonClass;
     this._inputErrorClass = inputErrorClass;
     this._errorClass = errorClass;
+  }
 
+  enableValidation() {
     this._initListeners();
   }
 

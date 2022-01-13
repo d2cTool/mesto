@@ -34,11 +34,7 @@ const previewPopup = new PopupWithImage(previewPopupSelector, {
 const cardPopup = new PopupWithForm(cardPopupSelector, {
   text1Selector: "#placeNameInput",
   text2Selector: "#linkInput",
-  handleFormSubmit: (values) => {
-    const card = new Card(values, cardTemplateSelector, previewPopup);
-    const cardElement = card.generateCard();
-    cardsList.addItem(cardElement);
-  },
+  handleFormSubmit: (data) => createCardElement(data),
 });
 
 const profilePopup = new PopupWithForm(profilePopupSelector, {
@@ -49,16 +45,14 @@ const profilePopup = new PopupWithForm(profilePopupSelector, {
   },
 });
 
+const validator = new FormValidator(utils.config);
+
 const userInfo = new UserInfo(profileTitleSelector, profileSubtitleSelector);
 
 const cardsList = new Section(
   {
     items: utils.initialCards,
-    renderer: (item) => {
-      const card = new Card(item, cardTemplateSelector, previewPopup);
-      const cardElement = card.generateCard();
-      cardsList.addItem(cardElement);
-    },
+    renderer: (data) => createCardElement(data),
   },
   cardsSelector
 );
@@ -69,6 +63,12 @@ const info = userInfo.getUserInfo();
 editButton.addEventListener("click", (e) =>
   profilePopup.open(info.name, info.job)
 );
-addButton.addEventListener("click", (e) => 
+addButton.addEventListener("click", (e) =>
   cardPopup.open("", "")
 );
+
+function createCardElement(data) {
+  return new Card(data, cardTemplateSelector, (title, photo) => {
+    previewPopup.open(title, photo);
+  }).generateCard();
+}
