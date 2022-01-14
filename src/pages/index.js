@@ -1,12 +1,12 @@
-import Card from "./scripts/Card.js";
-import FormValidator from "./scripts/FormValidator.js";
-import * as utils from "./scripts/utils/constants.js";
-import Section from "./scripts/Section.js";
-import PopupWithImage from "./scripts/PopupWithImage.js";
-import PopupWithForm from "./scripts/PopupWithForm.js";
-import UserInfo from "./scripts/UserInfo.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import * as utils from "../utils/constants.js";
+import Section from "../components/Section.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import UserInfo from "../components/UserInfo.js";
 
-import "./pages/index.css";
+import "./index.css";
 
 const previewPopup = new PopupWithImage(utils.previewPopupSelector, {
   photoSelector: utils.photoSelector,
@@ -36,11 +36,17 @@ const cardsList = new Section(
 cardsList.renderItems();
 
 utils.editButton.addEventListener("click", () => {
+  profilePopupValidator.resetValidation();
   const info = userInfo.getUserInfo();
-  profilePopup.open(info.name, info.job);
+  utils.profileName.value = info.name;
+  utils.profileJob.value = info.job;
+  profilePopup.open();
 });
 
-utils.addButton.addEventListener("click", () => cardPopup.open("", ""));
+utils.addButton.addEventListener("click", () => {
+  cardPopupValidator.resetValidation();
+  cardPopup.open("", "")
+});
 
 function createCardElement(data) {
   const card = new Card(data, utils.cardTemplateSelector, (title, photo) => {

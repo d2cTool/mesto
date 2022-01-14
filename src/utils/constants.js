@@ -45,5 +45,9 @@ export const profileSubtitleSelector = ".profile__subtitle";
 export const photoSelector = ".popup__photo";
 export const captionSelector = ".popup__caption";
 
+export const profilePopup = document.querySelector(".popup_type_profile");
+export const profileName = profilePopup.querySelector("#nameInput");
+export const profileJob = profilePopup.querySelector("#jobInput");
+
 export const editButton = document.querySelector(".profile__edit-button");
 export const addButton = document.querySelector(".profile__add-button");
