@@ -5,6 +5,7 @@ import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
+import { api } from "../components/Api.js";
 
 import "./index.css";
 
@@ -14,38 +15,61 @@ const previewPopup = new PopupWithImage(utils.previewPopupSelector, {
 });
 previewPopup.setEventListeners();
 
-const cardPopup = new PopupWithForm(utils.cardPopupSelector, (data) => cardsList.addItem(data));
+const confirmationPopup = new PopupWithConfirmation(
+  utils.confirmationPopupSelector,
+  ({cardElement, id}) => api.deleteCard(id).then(() => userInfo.setUserInfo(data))
+);
+confirmationPopup.setEventListeners();
+
+const cardPopup = new PopupWithForm(utils.cardPopupSelector, (data) =>
+  cardsList.addItem(data)
+);
 cardPopup.setEventListeners();
-const cardPopupValidator = new FormValidator({ ...utils.config, formSelector: utils.cardPopupSelector });
+const cardPopupValidator = new FormValidator({
+  ...utils.config,
+  formSelector: utils.cardPopupSelector,
+});
 cardPopupValidator.enableValidation();
 
-const profilePopup = new PopupWithForm(utils.profilePopupSelector, (values) => userInfo.setUserInfo(values.name, values.description));
+const profilePopup = new PopupWithForm(utils.profilePopupSelector, (values) => {
+  profilePopup.renderLoading(true);
+  api
+    .patchUserInfo(values.name, values.description)
+    .then((data) => userInfo.setUserInfo(data))
+    .finally(() => {
+      profilePopup.renderLoading(false);
+      profilePopup.close();
+    });
+});
 profilePopup.setEventListeners();
-const profilePopupValidator = new FormValidator({ ...utils.config, formSelector: utils.profilePopupSelector });
+const profilePopupValidator = new FormValidator({
+  ...utils.config,
+  formSelector: utils.profilePopupSelector,
+});
 profilePopupValidator.enableValidation();
 
-const userInfo = new UserInfo(utils.profileTitleSelector, utils.profileSubtitleSelector);
+const userInfo = new UserInfo(
+  utils.profileTitleSelector,
+  utils.profileSubtitleSelector,
+  utils.profileAvatarSelector
+);
 
 const cardsList = new Section(
-  {
-    items: utils.initialCards,
-    renderer: (data) => createCardElement(data),
-  },
+  (data) => createCardElement(data),
   utils.cardsSelector
 );
-cardsList.renderItems();
 
 utils.editButton.addEventListener("click", () => {
   profilePopupValidator.resetValidation();
   const info = userInfo.getUserInfo();
   utils.profileName.value = info.name;
-  utils.profileJob.value = info.job;
+  utils.profileJob.value = info.about;
   profilePopup.open();
 });
 
 utils.addButton.addEventListener("click", () => {
   cardPopupValidator.resetValidation();
-  cardPopup.open("", "")
+  cardPopup.open("", "");
 });
 
 function createCardElement(data) {
@@ -54,3 +78,6 @@ function createCardElement(data) {
   });
   return card.generateCard();
 }
+
+api.getInitialCards().then((data) => cardsList.renderItems(data));
+api.getUserInfo().then((data) => userInfo.setUserInfo(data));

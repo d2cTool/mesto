@@ -58,6 +58,52 @@
             </form>
           </div>
         </section>
+        <section class="popup popup_type_avatar">
+          <div class="popup__container popup__container_type_avatar">
+            <button
+              type="button"
+              aria-label="close"
+              class="popup__close-button"
+            ></button>
+            <form
+              action="/post"
+              name="popupAvatarForm"
+              class="popup__form"
+              novalidate
+            >
+              <h2 class="popup__title">Обновить аватар</h2>
+              <input
+                id="linkInput"
+                type="url"
+                name="link"
+                class="popup__input"
+                placeholder="Ссылка на картинку"
+                value=""
+                required
+              />
+              <span class="popup__form-text-error nameInput-error"></span>
+              <button type="submit" class="popup__button">Сохранить</button>
+            </form>
+          </div>
+        </section>
+        <section class="popup popup_type_confirmation">
+          <div class="popup__container popup__container_type_confirmation">
+            <button
+              type="button"
+              aria-label="close"
+              class="popup__close-button"
+            ></button>
+            <form
+              action="/post"
+              name="popupConfirmationForm"
+              class="popup__form"
+              novalidate
+            >
+              <h2 class="popup__title">Вы уверены?</h2>
+              <button type="submit" class="popup__button">Да</button>
+            </form>
+          </div>
+        </section>
         <section class="popup popup_type_card">
           <div class="popup__container popup__container_type_card">
             <button
@@ -150,11 +196,14 @@
         ></button>
         <div class="element__group">
           <h2 class="element__title"></h2>
-          <button
-            type="button"
-            aria-label="like"
-            class="element__like-button"
-          ></button>
+          <div class="element__like-group">
+            <button
+              type="button"
+              aria-label="like"
+              class="element__like-button"
+            ></button>
+            <span class="element__like-count">0</span>
+          </div>
         </div>
       </article>
     </template>
