@@ -4,8 +4,8 @@
   "description": "Представляет собой интерактивную страницу, где можно добавлять фотографии, удалять их и ставить лайки",
   "main": "./pages/index.js",
   "scripts": {
-    "build": "echo 'Добрый вечер, наставник ничего не ответил! Пока принудительно добавил npm install' && webpack --mode production",
-    "dev": "echo 'Добрый вечер, наставник ничего не ответил! Пока принудительно добавил npm install' && npm install && webpack --mode development && webpack serve",
+    "build": "webpack --mode production",
+    "dev": "webpack serve",
     "watch": "webpack --watch"
   },
   "repository": {
