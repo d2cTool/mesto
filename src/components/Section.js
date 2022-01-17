@@ -9,6 +9,10 @@ export default class Section {
     this._container.prepend(cardElement);
   }
 
+  removeItem(element) {
+    this._container.removeChild(element);
+  }
+
   clear() {
     this._container.innerHTML = "";
   }

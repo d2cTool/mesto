@@ -73,7 +73,7 @@
             >
               <h2 class="popup__title">Обновить аватар</h2>
               <input
-                id="linkInput"
+                id="avatarInput"
                 type="url"
                 name="link"
                 class="popup__input"
@@ -81,7 +81,7 @@
                 value=""
                 required
               />
-              <span class="popup__form-text-error nameInput-error"></span>
+              <span class="popup__form-text-error avatarInput-error"></span>
               <button type="submit" class="popup__button">Сохранить</button>
             </form>
           </div>
@@ -159,11 +159,13 @@
         </section>
         <section class="profile">
           <div class="profile__content">
-            <img
-              src="<%=require('./images/avatar.jpg')%>"
-              alt="аватар"
-              class="profile__avatar"
-            />
+            <div class="profile__avatar">
+              <img
+                src="<%=require('./images/avatar.jpg')%>"
+                alt="аватар"
+                class="profile__avatar-icon"
+              />
+            </div>
             <div class="profile__info">
               <h1 class="profile__title">Жак-Ив Кусто</h1>
               <button

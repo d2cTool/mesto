@@ -4,6 +4,7 @@ import * as utils from "../utils/constants.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import UserInfo from "../components/UserInfo.js";
 import { api } from "../components/Api.js";
 
@@ -17,12 +18,18 @@ previewPopup.setEventListeners();
 
 const confirmationPopup = new PopupWithConfirmation(
   utils.confirmationPopupSelector,
-  ({cardElement, id}) => api.deleteCard(id).then(() => userInfo.setUserInfo(data))
+  (data) => api.deleteCard(data.id).then(() => {
+    cardsList.removeItem(data.element);
+    confirmationPopup.close();
+  })
 );
 confirmationPopup.setEventListeners();
 
 const cardPopup = new PopupWithForm(utils.cardPopupSelector, (data) =>
-  cardsList.addItem(data)
+  api.postCard(data.name, data.link).then((data) => {
+    cardsList.addItem(data);
+    cardPopup.close();
+  })
 );
 cardPopup.setEventListeners();
 const cardPopupValidator = new FormValidator({
@@ -48,10 +55,30 @@ const profilePopupValidator = new FormValidator({
 });
 profilePopupValidator.enableValidation();
 
+const avatarPopup = new PopupWithForm(utils.avatarPopupSelector, (data) => {
+  avatarPopup.renderLoading(true);
+  api
+    .patchUserAvatar(data.link)
+    .then(() => {
+      const info = userInfo.getUserInfo();
+      userInfo.setUserInfo({ ...info, avatar: data.link });
+    })
+    .finally(() => {
+      avatarPopup.renderLoading(false);
+      avatarPopup.close();
+    });
+});
+avatarPopup.setEventListeners();
+const avatarPopupValidator = new FormValidator({
+  ...utils.config,
+  formSelector: utils.avatarPopupSelector,
+});
+avatarPopupValidator.enableValidation();
+
 const userInfo = new UserInfo(
   utils.profileTitleSelector,
   utils.profileSubtitleSelector,
-  utils.profileAvatarSelector
+  utils.profileAvatarIconSelector
 );
 
 const cardsList = new Section(
@@ -72,12 +99,33 @@ utils.addButton.addEventListener("click", () => {
   cardPopup.open("", "");
 });
 
+utils.avatarButton.addEventListener("click", () => {
+  avatarPopupValidator.resetValidation();
+  avatarPopup.open();
+});
+
 function createCardElement(data) {
-  const card = new Card(data, utils.cardTemplateSelector, (title, photo) => {
-    previewPopup.open(title, photo);
-  });
+  const info = userInfo.getUserInfo();
+  const card = new Card(data, info, utils.cardTemplateSelector,
+    (title, photo) => {
+      previewPopup.open(title, photo);
+    },
+    (id, isLiked) => {
+      if (isLiked)
+        api.addLike(id);
+      else
+        api.removeLike(id);
+    },
+    (element, id) => {
+      confirmationPopup.open({ element, id });
+    }
+  );
   return card.generateCard();
 }
 
-api.getInitialCards().then((data) => cardsList.renderItems(data));
-api.getUserInfo().then((data) => userInfo.setUserInfo(data));
+api.getUserInfo()
+  .then((data) =>
+    userInfo.setUserInfo(data))
+  .then(() =>
+    api.getInitialCards().then((data) => cardsList.renderItems(data)));
+
