@@ -18,21 +18,18 @@ previewPopup.setEventListeners();
 
 const confirmationPopup = new PopupWithConfirmation(
   utils.confirmationPopupSelector,
-  (data) => api.deleteCard(data.id).then(() => {
-    cardsList.removeItem(data.element);
-    confirmationPopup.close();
-  })
-    .catch((err) => {
-      console.log(err)
-    })
+  (data) => api.deleteCard(data.id)
+    .then(() => cardsList.removeItem(data.element))
+    .then(() => confirmationPopup.close())
+    .catch((err) => console.log(err))
 );
 confirmationPopup.setEventListeners();
 
 const cardPopup = new PopupWithForm(utils.cardPopupSelector, (data) =>
-  api.postCard(data.name, data.link).then((data) => {
-    cardsList.addNewItem(data);
-    cardPopup.close();
-  })
+  api.postCard(data.name, data.link)
+    .then((data) => cardsList.addNewItem(data))
+    .then(() => cardPopup.close())
+    .catch((err) => console.log(err))
 );
 cardPopup.setEventListeners();
 const cardPopupValidator = new FormValidator({
@@ -46,13 +43,9 @@ const profilePopup = new PopupWithForm(utils.profilePopupSelector, (values) => {
   api
     .patchUserInfo(values.name, values.description)
     .then((data) => userInfo.setUserInfo(data))
-    .catch((err) => {
-      console.log(err)
-    })
-    .then(() => {
-      profilePopup.renderLoading(false);
-      profilePopup.close();
-    });
+    .then(() => profilePopup.renderLoading(false))
+    .then(() => profilePopup.close())
+    .catch((err) => console.log(err))
 });
 profilePopup.setEventListeners();
 const profilePopupValidator = new FormValidator({
@@ -69,13 +62,9 @@ const avatarPopup = new PopupWithForm(utils.avatarPopupSelector, (data) => {
       const info = userInfo.getUserInfo();
       userInfo.setUserInfo({ ...info, avatar: data.link });
     })
-    .catch((err) => {
-      console.log(err)
-    })
-    .then(() => {
-      avatarPopup.renderLoading(false);
-      avatarPopup.close();
-    });
+    .then(() => avatarPopup.renderLoading(false))
+    .then(() => avatarPopup.close())
+    .catch((err) => console.log(err))
 });
 avatarPopup.setEventListeners();
 const avatarPopupValidator = new FormValidator({
