@@ -5,120 +5,76 @@ class Api {
   }
 
   getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, { headers: this._headers })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
+    return this._fetchRequest(`/cards`, { headers: this._headers });
   }
 
   postCard(name, link) {
-    return fetch(`${this._baseUrl}/cards`, {
+    return this._fetchRequest(`/cards`, {
       headers: this._headers,
       method: "POST",
       body: JSON.stringify({
         name: name,
         link: link,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
+    });
   }
 
   deleteCard(id) {
-    return fetch(`${this._baseUrl}/cards/${id}`, {
+    return this._fetchRequest(`/cards/${id}`, {
       headers: this._headers,
       method: "DELETE",
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
+    });
   }
 
   addLike(id) {
-    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+    return this._fetchRequest(`/cards/${id}/likes`, {
       headers: this._headers,
       method: "PUT",
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
+    });
   }
 
   removeLike(id) {
-    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+    return this._fetchRequest(`/cards/${id}/likes`, {
       headers: this._headers,
       method: "DELETE",
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
+    });
   }
 
   getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, { headers: this._headers })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
+    return this._fetchRequest(`/users/me`, {
+      headers: this._headers
+    });
   }
 
   patchUserInfo(name, about) {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return this._fetchRequest(`/users/me`, {
       headers: this._headers,
       method: "PATCH",
       body: JSON.stringify({
         name: name,
         about: about,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
-      .catch((err) => console.log(`Ошибка: ${err}`));
+    });
   }
 
   patchUserAvatar(avatar) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
+    return this._fetchRequest(`/users/me/avatar`, {
       headers: this._headers,
       method: "PATCH",
       body: JSON.stringify({
         avatar: avatar,
-      }),
-    })
+      })
+    });
+  }
+
+  _fetchRequest(url, options) {
+    return fetch(`${this._baseUrl}${url}`, options)
       .then((res) => {
         if (res.ok) {
           return res.json();
         }
         return Promise.reject(res.status);
       })
-      .catch((err) => console.log(`Ошибка: ${err}`));
   }
 }
 

@@ -22,12 +22,15 @@ const confirmationPopup = new PopupWithConfirmation(
     cardsList.removeItem(data.element);
     confirmationPopup.close();
   })
+    .catch((err) => {
+      console.log(err)
+    })
 );
 confirmationPopup.setEventListeners();
 
 const cardPopup = new PopupWithForm(utils.cardPopupSelector, (data) =>
   api.postCard(data.name, data.link).then((data) => {
-    cardsList.addItem(data);
+    cardsList.addNewItem(data);
     cardPopup.close();
   })
 );
@@ -43,7 +46,10 @@ const profilePopup = new PopupWithForm(utils.profilePopupSelector, (values) => {
   api
     .patchUserInfo(values.name, values.description)
     .then((data) => userInfo.setUserInfo(data))
-    .finally(() => {
+    .catch((err) => {
+      console.log(err)
+    })
+    .then(() => {
       profilePopup.renderLoading(false);
       profilePopup.close();
     });
@@ -63,7 +69,10 @@ const avatarPopup = new PopupWithForm(utils.avatarPopupSelector, (data) => {
       const info = userInfo.getUserInfo();
       userInfo.setUserInfo({ ...info, avatar: data.link });
     })
-    .finally(() => {
+    .catch((err) => {
+      console.log(err)
+    })
+    .then(() => {
       avatarPopup.renderLoading(false);
       avatarPopup.close();
     });
@@ -110,11 +119,11 @@ function createCardElement(data) {
     (title, photo) => {
       previewPopup.open(title, photo);
     },
-    (id, isLiked) => {
-      if (isLiked)
-        api.addLike(id);
+    (id, isLiked, item) => {
+      if (!isLiked)
+        api.addLike(id).then(() => card.like(item));
       else
-        api.removeLike(id);
+        api.removeLike(id).then(() => card.like(item));
     },
     (element, id) => {
       confirmationPopup.open({ element, id });
@@ -123,9 +132,11 @@ function createCardElement(data) {
   return card.generateCard();
 }
 
-api.getUserInfo()
-  .then((data) =>
-    userInfo.setUserInfo(data))
-  .then(() =>
-    api.getInitialCards().then((data) => cardsList.renderItems(data)));
-
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([info, cards]) => {
+    userInfo.setUserInfo(info);
+    cardsList.renderItems(cards);
+  })
+  .catch((err) => {
+    console.log(err)
+  });

@@ -15,7 +15,7 @@ export default class FormValidator {
     this._errorClass = errorClass;
     this._inputList = Array.from(this._form.querySelectorAll(this._input));
     this._buttonElement = this._form.querySelector(this._submitButton);
-    
+
   }
 
   enableValidation() {
@@ -56,13 +56,13 @@ export default class FormValidator {
     const errorElement = this._form.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(this._inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add(this._errorClass);
+    //errorElement.classList.add(this._errorClass);
   }
 
   _hideInputError(inputElement) {
     const errorElement = this._form.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(this._inputErrorClass);
-    errorElement.classList.remove(this._errorClass);
+    //errorElement.classList.remove(this._errorClass);
     errorElement.textContent = "";
   }
 
