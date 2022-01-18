@@ -21,8 +21,10 @@ const confirmationPopup = new PopupWithConfirmation(
   (data) =>
     api
       .deleteCard(data.id)
-      .then(() => cardsList.removeItem(data.element))
-      .then(() => confirmationPopup.close())
+      .then(() => {
+        cardsList.removeItem(data.element);
+        confirmationPopup.close();
+      })
       .catch((err) => console.log(err))
 );
 confirmationPopup.setEventListeners();
