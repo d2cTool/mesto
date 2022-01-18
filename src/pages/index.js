@@ -18,19 +18,26 @@ previewPopup.setEventListeners();
 
 const confirmationPopup = new PopupWithConfirmation(
   utils.confirmationPopupSelector,
-  (data) => api.deleteCard(data.id)
-    .then(() => cardsList.removeItem(data.element))
-    .then(() => confirmationPopup.close())
-    .catch((err) => console.log(err))
+  (data) =>
+    api
+      .deleteCard(data.id)
+      .then(() => cardsList.removeItem(data.element))
+      .then(() => confirmationPopup.close())
+      .catch((err) => console.log(err))
 );
 confirmationPopup.setEventListeners();
 
-const cardPopup = new PopupWithForm(utils.cardPopupSelector, (data) =>
-  api.postCard(data.name, data.link)
-    .then((data) => cardsList.addNewItem(data))
-    .then(() => cardPopup.close())
+const cardPopup = new PopupWithForm(utils.cardPopupSelector, (data) => {
+  cardPopup.renderLoading(true);
+  api
+    .postCard(data.name, data.link)
+    .then((data) => {
+      cardsList.addNewItem(data);
+      cardPopup.close();
+    })
     .catch((err) => console.log(err))
-);
+    .finally(() => cardPopup.renderLoading(false));
+});
 cardPopup.setEventListeners();
 const cardPopupValidator = new FormValidator({
   ...utils.config,
@@ -42,10 +49,12 @@ const profilePopup = new PopupWithForm(utils.profilePopupSelector, (values) => {
   profilePopup.renderLoading(true);
   api
     .patchUserInfo(values.name, values.description)
-    .then((data) => userInfo.setUserInfo(data))
-    .then(() => profilePopup.renderLoading(false))
-    .then(() => profilePopup.close())
+    .then((data) => {
+      userInfo.setUserInfo(data);
+      profilePopup.close();
+    })
     .catch((err) => console.log(err))
+    .finally(() => profilePopup.renderLoading(false));
 });
 profilePopup.setEventListeners();
 const profilePopupValidator = new FormValidator({
@@ -61,10 +70,10 @@ const avatarPopup = new PopupWithForm(utils.avatarPopupSelector, (data) => {
     .then(() => {
       const info = userInfo.getUserInfo();
       userInfo.setUserInfo({ ...info, avatar: data.link });
+      avatarPopup.close();
     })
-    .then(() => avatarPopup.renderLoading(false))
-    .then(() => avatarPopup.close())
     .catch((err) => console.log(err))
+    .finally(() => profilePopup.renderLoading(false));
 });
 avatarPopup.setEventListeners();
 const avatarPopupValidator = new FormValidator({
@@ -104,15 +113,16 @@ utils.avatarButton.addEventListener("click", () => {
 
 function createCardElement(data) {
   const info = userInfo.getUserInfo();
-  const card = new Card(data, info, utils.cardTemplateSelector,
+  const card = new Card(
+    data,
+    info,
+    utils.cardTemplateSelector,
     (title, photo) => {
       previewPopup.open(title, photo);
     },
     (id, isLiked, item) => {
-      if (!isLiked)
-        api.addLike(id).then(() => card.like(item));
-      else
-        api.removeLike(id).then(() => card.like(item));
+      if (!isLiked) api.addLike(id).then(() => card.like(item));
+      else api.removeLike(id).then(() => card.like(item));
     },
     (element, id) => {
       confirmationPopup.open({ element, id });
@@ -127,5 +137,5 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     cardsList.renderItems(cards);
   })
   .catch((err) => {
-    console.log(err)
+    console.log(err);
   });
