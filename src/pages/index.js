@@ -123,8 +123,16 @@ function createCardElement(data) {
       previewPopup.open(title, photo);
     },
     (id, isLiked, item) => {
-      if (!isLiked) api.addLike(id).then(() => card.like(item));
-      else api.removeLike(id).then(() => card.like(item));
+      if (!isLiked)
+        api
+          .addLike(id)
+          .then(() => card.like(item))
+          .catch((err) => console.log(err));
+      else
+        api
+          .removeLike(id)
+          .then(() => card.like(item))
+          .catch((err) => console.log(err));
     },
     (element, id) => {
       confirmationPopup.open({ element, id });
